@@ -76,7 +76,6 @@ module.exports = function(grunt) {
   		var pem = fs.readFileSync(pemPath),
   			zip_ = new JSZip();
   		zipRecursion(extPath,zip_);	
-  		console.log(123);
   		var zipData = new Buffer(zip_.generate({base64:false,compression:"DEFLATE"}),"binary"),
   			signature = new Buffer(crypto.createSign("sha1").update(zipData).sign(pem),"binary");
 
@@ -95,6 +94,7 @@ module.exports = function(grunt) {
   				signature.copy(crx,16 + keyLength);
   				zipData.copy(crx,16 + keyLength + signLength);
   				fs.writeFileSync(buildPath,crx);
+          grunt.log.ok("the extension pkg is general to : " + buildPath);
   				done();
   			});
 
